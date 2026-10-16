@@ -8,9 +8,16 @@ import { SITE } from "@/lib/site";
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const featured = await listProperties({ featuredOnly: true });
-  const fallback = await listProperties();
-  const show = (featured.length ? featured : fallback).slice(0, 6);
+  let show: Awaited<ReturnType<typeof listProperties>> = [];
+  try {
+    const featured = await listProperties({ featuredOnly: true });
+    const fallback = featured.length
+      ? featured
+      : await listProperties();
+    show = fallback.slice(0, 6);
+  } catch (error) {
+    console.error("[home] failed to load listings:", error);
+  }
 
   return (
     <>
@@ -67,6 +74,13 @@ export default async function HomePage() {
               <PropertyCard key={property.id} property={property} />
             ))}
           </div>
+
+          {show.length === 0 && (
+            <div className="mt-10 border border-dashed border-[var(--line)] bg-white/70 p-8 text-center text-ink/60">
+              No listings yet. Add properties from the agent dashboard after
+              the database table is set up.
+            </div>
+          )}
         </div>
       </section>
 
@@ -81,7 +95,10 @@ export default async function HomePage() {
               ready-to-move homes around Perur and greater Coimbatore.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact" className="bg-white px-5 py-3 font-semibold text-forest">
+              <Link
+                href="/contact"
+                className="bg-white px-5 py-3 font-semibold text-forest"
+              >
                 Contact us
               </Link>
               <a

@@ -24,14 +24,26 @@ export async function listProperties(options?: {
   featuredOnly?: boolean;
 }): Promise<Property[]> {
   if (getDataBackend() === "supabase") {
-    return supabaseListProperties(options);
+    try {
+      return await supabaseListProperties(options);
+    } catch (error) {
+      console.error("[listings] Supabase list failed:", error);
+      // Fail soft on public pages so the site still loads (e.g. before schema is run)
+      if (!options?.includeSold) return [];
+      throw error;
+    }
   }
   return localListProperties(options);
 }
 
 export async function getProperty(id: string): Promise<Property | null> {
   if (getDataBackend() === "supabase") {
-    return supabaseGetProperty(id);
+    try {
+      return await supabaseGetProperty(id);
+    } catch (error) {
+      console.error("[listings] Supabase get failed:", error);
+      return null;
+    }
   }
   return localGetProperty(id);
 }

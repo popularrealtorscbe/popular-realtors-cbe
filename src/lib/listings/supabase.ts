@@ -25,20 +25,34 @@ export async function supabaseListProperties(options?: {
   }
 
   const { data, error } = await query;
-  if (error) throw error;
+  if (error) {
+    console.error("[supabase] list properties:", error.message);
+    // Common when schema.sql has not been run yet
+    return [];
+  }
   return ((data ?? []) as Property[]).map((item) => normalizeProperty(item));
 }
 
 export async function supabaseGetProperty(
   id: string,
 ): Promise<Property | null> {
-  const admin = createAdminClient();
-  const { data, error } = await admin
+  // Prefer service role so admin can open sold listings; fall back to anon
+  let client;
+  try {
+    client = createAdminClient();
+  } catch {
+    client = await createClient();
+  }
+
+  const { data, error } = await client
     .from("properties")
     .select("*")
     .or(`id.eq.${id},slug.eq.${id}`)
     .maybeSingle();
-  if (error) throw error;
+  if (error) {
+    console.error("[supabase] get property:", error.message);
+    return null;
+  }
   if (!data) return null;
   return normalizeProperty(data as Property);
 }

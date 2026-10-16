@@ -11,21 +11,36 @@ async function ensureFile(): Promise<void> {
   try {
     await fs.access(DATA_PATH);
   } catch {
-    await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
-    await fs.writeFile(DATA_PATH, JSON.stringify(SEED_LISTINGS, null, 2));
+    // On Vercel the filesystem is read-only — never crash the site for seed writes
+    try {
+      await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
+      await fs.writeFile(DATA_PATH, JSON.stringify(SEED_LISTINGS, null, 2));
+    } catch {
+      // ignore
+    }
   }
 }
 
 async function readAll(): Promise<Property[]> {
-  await ensureFile();
-  const raw = await fs.readFile(DATA_PATH, "utf8");
-  const listings = JSON.parse(raw) as Property[];
-  return listings.map((item) => normalizeProperty(item));
+  try {
+    await ensureFile();
+    const raw = await fs.readFile(DATA_PATH, "utf8");
+    const listings = JSON.parse(raw) as Property[];
+    return listings.map((item) => normalizeProperty(item));
+  } catch {
+    return SEED_LISTINGS.map((item) => normalizeProperty(item));
+  }
 }
 
 async function writeAll(listings: Property[]): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
-  await fs.writeFile(DATA_PATH, JSON.stringify(listings, null, 2));
+  try {
+    await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
+    await fs.writeFile(DATA_PATH, JSON.stringify(listings, null, 2));
+  } catch (error) {
+    throw new Error(
+      "Cannot save listings on this host. Connect Supabase env vars on Vercel.",
+    );
+  }
 }
 
 export async function localListProperties(options?: {
