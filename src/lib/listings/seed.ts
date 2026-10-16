@@ -18,6 +18,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Perur",
     features: ["DTCP Approved", "Clear Title", "Corner Plot", "Wide Road"],
+    thumbnail: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80",
       "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=1200&q=80",
@@ -42,6 +43,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Thondamuthur",
     features: ["Borewell", "Fertile Soil", "Farm Road Access", "Fenced"],
+    thumbnail: "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80",
       "https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&q=80",
@@ -66,6 +68,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Madukkarai",
     features: ["NH Access", "3-Phase Power Nearby", "Heavy Vehicle Road"],
+    thumbnail: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80",
       "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1200&q=80",
@@ -90,6 +93,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Vadavalli",
     features: ["3 BHK", "Car Parking", "Ready Possession", "Gated Street"],
+    thumbnail: "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=1200&q=80",
       "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
@@ -114,6 +118,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Kuniyamuthur",
     features: ["East Facing", "Layout Roads", "Investment Ready"],
+    thumbnail: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1200&q=80",
     ],
@@ -137,6 +142,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Pollachi Road",
     features: ["Coconut Trees", "Irrigation", "Income Generating"],
+    thumbnail: "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1592982537447-7440770cbfc9?w=1200&q=80",
       "https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=1200&q=80",
@@ -161,6 +167,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Siruvani Road",
     features: ["Main Road", "High Visibility", "Mixed Use Potential"],
+    thumbnail: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1200&q=80",
     ],
@@ -184,6 +191,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Anaikatti",
     features: ["Hill View", "Farmhouse Potential", "Cool Climate"],
+    thumbnail: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1200&q=80",
       "https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80",
@@ -208,6 +216,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Sundakkamuthur",
     features: ["Budget Friendly", "Clear Documents", "Growing Area"],
+    thumbnail: "https://images.unsplash.com/photo-1592595896616-c37162298647?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1592595896616-c37162298647?w=1200&q=80",
     ],
@@ -231,6 +240,7 @@ export const SEED_LISTINGS: Property[] = [
     city: "Coimbatore",
     locality: "Perur Chettipalayam",
     features: ["Sold Example"],
+    thumbnail: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
     images: [
       "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
     ],

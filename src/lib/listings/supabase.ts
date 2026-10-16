@@ -1,13 +1,13 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { slugify } from "../format";
-import type { Property, PropertyInput } from "../types";
+import { normalizeProperty } from "../images";
+import { FALLBACK_IMAGE, type Property, type PropertyInput } from "../types";
 
 export async function supabaseListProperties(options?: {
   includeSold?: boolean;
   featuredOnly?: boolean;
 }): Promise<Property[]> {
-  // Admin views (include sold) need service role to bypass "available-only" RLS
   const supabase = options?.includeSold
     ? createAdminClient()
     : await createClient();
@@ -26,7 +26,7 @@ export async function supabaseListProperties(options?: {
 
   const { data, error } = await query;
   if (error) throw error;
-  return (data ?? []) as Property[];
+  return ((data ?? []) as Property[]).map((item) => normalizeProperty(item));
 }
 
 export async function supabaseGetProperty(
@@ -39,7 +39,8 @@ export async function supabaseGetProperty(
     .or(`id.eq.${id},slug.eq.${id}`)
     .maybeSingle();
   if (error) throw error;
-  return (data as Property | null) ?? null;
+  if (!data) return null;
+  return normalizeProperty(data as Property);
 }
 
 export async function supabaseCreateProperty(
@@ -47,6 +48,10 @@ export async function supabaseCreateProperty(
 ): Promise<Property> {
   const supabase = createAdminClient();
   const title = input.title.trim();
+  const thumbnail =
+    input.thumbnail?.trim() || input.images?.[0] || FALLBACK_IMAGE;
+  const images = (input.images ?? []).filter((src) => src && src !== thumbnail);
+
   const payload = {
     title,
     slug: input.slug?.trim() || slugify(title),
@@ -60,7 +65,8 @@ export async function supabaseCreateProperty(
     city: input.city || "Coimbatore",
     locality: input.locality,
     features: input.features ?? [],
-    images: input.images ?? [],
+    thumbnail,
+    images,
     featured: Boolean(input.featured),
     expires_at: input.expires_at ?? null,
   };
@@ -71,7 +77,7 @@ export async function supabaseCreateProperty(
     .select("*")
     .single();
   if (error) throw error;
-  return data as Property;
+  return normalizeProperty(data as Property);
 }
 
 export async function supabaseUpdateProperty(
@@ -88,6 +94,14 @@ export async function supabaseUpdateProperty(
     if (!input.slug) payload.slug = slugify(input.title);
   }
   if (input.price !== undefined) payload.price = Number(input.price);
+  if (input.thumbnail !== undefined) {
+    payload.thumbnail = input.thumbnail.trim() || FALLBACK_IMAGE;
+  }
+  if (input.images !== undefined) {
+    const thumb =
+      (payload.thumbnail as string | undefined) || input.thumbnail || "";
+    payload.images = input.images.filter((src) => src && src !== thumb);
+  }
 
   const { data, error } = await supabase
     .from("properties")
@@ -96,7 +110,8 @@ export async function supabaseUpdateProperty(
     .select("*")
     .maybeSingle();
   if (error) throw error;
-  return (data as Property | null) ?? null;
+  if (!data) return null;
+  return normalizeProperty(data as Property);
 }
 
 export async function supabaseDeleteProperty(id: string): Promise<boolean> {

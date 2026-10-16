@@ -105,11 +105,12 @@ export function AdminDashboard({
             >
               <div className="relative h-20 w-full shrink-0 overflow-hidden md:w-28">
                 <Image
-                  src={property.images[0]}
+                  src={property.thumbnail || property.images[0]}
                   alt={property.title}
                   fill
                   className="object-cover"
                   sizes="112px"
+                  unoptimized={(property.thumbnail || property.images[0] || "").startsWith("/uploads/")}
                 />
               </div>
               <div className="min-w-0 flex-1">

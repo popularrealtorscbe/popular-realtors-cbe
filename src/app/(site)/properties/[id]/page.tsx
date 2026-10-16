@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MapPin, MessageCircle, Phone } from "lucide-react";
 import { formatArea, formatPrice, propertyTypeLabel } from "@/lib/format";
+import { getGallery } from "@/lib/images";
 import { getProperty } from "@/lib/listings/store";
 import { SITE } from "@/lib/site";
 
@@ -14,6 +15,10 @@ export default async function PropertyDetailPage({
   const { id } = await params;
   const property = await getProperty(id);
   if (!property || property.status !== "available") notFound();
+
+  const gallery = getGallery(property);
+  const mainImage = gallery[0];
+  const moreImages = gallery.slice(1);
 
   const waText = encodeURIComponent(
     `Hi, I'm interested in "${property.title}" listed on Popular Realtors CBE.`,
@@ -30,17 +35,18 @@ export default async function PropertyDetailPage({
           <div>
             <div className="relative aspect-[16/10] overflow-hidden bg-mist">
               <Image
-                src={property.images[0]}
+                src={mainImage}
                 alt={property.title}
                 fill
                 className="object-cover"
                 priority
                 sizes="(max-width: 1024px) 100vw, 60vw"
+                unoptimized={mainImage.startsWith("/uploads/")}
               />
             </div>
-            {property.images.length > 1 && (
+            {moreImages.length > 0 && (
               <div className="mt-3 grid grid-cols-3 gap-3">
-                {property.images.slice(1, 4).map((src) => (
+                {moreImages.map((src) => (
                   <div key={src} className="relative aspect-[4/3] overflow-hidden">
                     <Image
                       src={src}
@@ -48,6 +54,7 @@ export default async function PropertyDetailPage({
                       fill
                       className="object-cover"
                       sizes="200px"
+                      unoptimized={src.startsWith("/uploads/")}
                     />
                   </div>
                 ))}

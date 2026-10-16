@@ -1,7 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { slugify } from "../format";
-import type { Property, PropertyInput } from "../types";
+import { normalizeProperty } from "../images";
+import { FALLBACK_IMAGE, type Property, type PropertyInput } from "../types";
 import { SEED_LISTINGS } from "./seed";
 
 const DATA_PATH = path.join(process.cwd(), "data", "listings.json");
@@ -18,7 +19,8 @@ async function ensureFile(): Promise<void> {
 async function readAll(): Promise<Property[]> {
   await ensureFile();
   const raw = await fs.readFile(DATA_PATH, "utf8");
-  return JSON.parse(raw) as Property[];
+  const listings = JSON.parse(raw) as Property[];
+  return listings.map((item) => normalizeProperty(item));
 }
 
 async function writeAll(listings: Property[]): Promise<void> {
@@ -45,9 +47,7 @@ export async function localListProperties(options?: {
 
 export async function localGetProperty(id: string): Promise<Property | null> {
   const listings = await readAll();
-  return (
-    listings.find((p) => p.id === id || p.slug === id) ?? null
-  );
+  return listings.find((p) => p.id === id || p.slug === id) ?? null;
 }
 
 export async function localCreateProperty(
@@ -56,6 +56,9 @@ export async function localCreateProperty(
   const listings = await readAll();
   const now = new Date().toISOString();
   const title = input.title.trim();
+  const thumbnail = input.thumbnail?.trim() || input.images?.[0] || FALLBACK_IMAGE;
+  const images = (input.images ?? []).filter((src) => src && src !== thumbnail);
+
   const property: Property = {
     id: input.id ?? `prop-${Date.now()}`,
     title,
@@ -70,11 +73,8 @@ export async function localCreateProperty(
     city: input.city || "Coimbatore",
     locality: input.locality,
     features: input.features ?? [],
-    images: input.images?.length
-      ? input.images
-      : [
-          "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80",
-        ],
+    thumbnail,
+    images,
     featured: Boolean(input.featured),
     created_at: now,
     updated_at: now,
@@ -95,6 +95,15 @@ export async function localUpdateProperty(
 
   const current = listings[index];
   const title = input.title?.trim() ?? current.title;
+  const thumbnail =
+    input.thumbnail !== undefined
+      ? input.thumbnail.trim() || current.images[0] || FALLBACK_IMAGE
+      : current.thumbnail;
+  const images =
+    input.images !== undefined
+      ? input.images.filter((src) => src && src !== thumbnail)
+      : current.images.filter((src) => src !== thumbnail);
+
   const updated: Property = {
     ...current,
     ...input,
@@ -106,7 +115,8 @@ export async function localUpdateProperty(
     area_acres:
       input.area_acres !== undefined ? input.area_acres : current.area_acres,
     features: input.features ?? current.features,
-    images: input.images ?? current.images,
+    thumbnail,
+    images,
     featured:
       input.featured !== undefined ? Boolean(input.featured) : current.featured,
     updated_at: new Date().toISOString(),

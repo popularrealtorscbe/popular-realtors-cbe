@@ -2,10 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { MapPin } from "lucide-react";
 import { formatArea, formatPrice, propertyTypeLabel } from "@/lib/format";
+import { getThumbnail } from "@/lib/images";
 import type { Property } from "@/lib/types";
 
 export function PropertyCard({ property }: { property: Property }) {
-  const image = property.images[0];
+  const image = getThumbnail(property);
 
   return (
     <Link
@@ -19,6 +20,7 @@ export function PropertyCard({ property }: { property: Property }) {
           fill
           className="object-cover transition duration-700 group-hover:scale-105"
           sizes="(max-width: 768px) 100vw, 33vw"
+          unoptimized={image.startsWith("/uploads/")}
         />
         <div className="absolute left-3 top-3 bg-forest px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
           {propertyTypeLabel(property.property_type)}

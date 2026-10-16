@@ -21,6 +21,9 @@ export interface Property {
   city: string;
   locality: string;
   features: string[];
+  /** Main card / hero image */
+  thumbnail: string;
+  /** Extra gallery photos */
   images: string[];
   featured: boolean;
   created_at: string;
@@ -49,3 +52,6 @@ export const STATUS_LABELS: Record<PropertyStatus, string> = {
   sold: "Sold",
   reserved: "Reserved",
 };
+
+export const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80";

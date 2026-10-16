@@ -2,6 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { ImageUploader } from "@/components/admin/ImageUploader";
+import { FALLBACK_IMAGE } from "@/lib/types";
 import {
   PROPERTY_TYPE_LABELS,
   STATUS_LABELS,
@@ -28,6 +30,7 @@ const empty: PropertyInput = {
   city: "Coimbatore",
   locality: "",
   features: [],
+  thumbnail: "",
   images: [],
   featured: false,
   expires_at: null,
@@ -49,7 +52,8 @@ export function PropertyForm({ initial, mode }: Props) {
           city: initial.city,
           locality: initial.locality,
           features: initial.features,
-          images: initial.images,
+          thumbnail: initial.thumbnail || initial.images[0] || "",
+          images: initial.images.filter((src) => src !== initial.thumbnail),
           featured: initial.featured,
           expires_at: initial.expires_at,
         }
@@ -57,9 +61,6 @@ export function PropertyForm({ initial, mode }: Props) {
   );
   const [featuresText, setFeaturesText] = useState(
     (initial?.features || []).join(", "),
-  );
-  const [imagesText, setImagesText] = useState(
-    (initial?.images || []).join("\n"),
   );
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -69,14 +70,21 @@ export function PropertyForm({ initial, mode }: Props) {
     setSaving(true);
     setError("");
 
+    if (!form.thumbnail && form.images.length === 0) {
+      setSaving(false);
+      setError("Add a main thumbnail (and optional gallery images).");
+      return;
+    }
+
+    const thumbnail = form.thumbnail || form.images[0] || FALLBACK_IMAGE;
+    const images = form.images.filter((src) => src !== thumbnail);
+
     const payload: PropertyInput = {
       ...form,
+      thumbnail,
+      images,
       features: featuresText
         .split(",")
-        .map((f) => f.trim())
-        .filter(Boolean),
-      images: imagesText
-        .split("\n")
         .map((f) => f.trim())
         .filter(Boolean),
       location:
@@ -231,15 +239,14 @@ export function PropertyForm({ initial, mode }: Props) {
             placeholder="DTCP Approved, Clear Title, Corner Plot"
           />
         </div>
-        <div className="md:col-span-2">
-          <label className="label">Image URLs (one per line)</label>
-          <textarea
-            className="input min-h-28"
-            value={imagesText}
-            onChange={(e) => setImagesText(e.target.value)}
-            placeholder="https://images.unsplash.com/..."
-          />
-        </div>
+
+        <ImageUploader
+          thumbnail={form.thumbnail}
+          images={form.images}
+          onThumbnailChange={(thumbnail) => setForm({ ...form, thumbnail })}
+          onImagesChange={(images) => setForm({ ...form, images })}
+        />
+
         <label className="flex items-center gap-2 text-sm font-medium">
           <input
             type="checkbox"
@@ -254,7 +261,11 @@ export function PropertyForm({ initial, mode }: Props) {
 
       <div className="flex gap-3">
         <button type="submit" className="btn-primary" disabled={saving}>
-          {saving ? "Saving…" : mode === "create" ? "Add property" : "Save changes"}
+          {saving
+            ? "Saving…"
+            : mode === "create"
+              ? "Add property"
+              : "Save changes"}
         </button>
         <button
           type="button"

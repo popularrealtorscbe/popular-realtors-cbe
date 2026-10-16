@@ -38,6 +38,7 @@ export async function POST(request: Request) {
     location: body.location || `${body.locality || "Coimbatore"}, Coimbatore`,
     description: body.description || "",
     features: body.features || [],
+    thumbnail: body.thumbnail || body.images?.[0] || "",
     images: body.images || [],
     featured: Boolean(body.featured),
     area_sqft: body.area_sqft ?? null,
