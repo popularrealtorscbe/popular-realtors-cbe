@@ -92,24 +92,30 @@ export function PropertyForm({ initial, mode }: Props) {
         `${form.locality || "Coimbatore"}, ${form.city || "Coimbatore"}`,
     };
 
-    const res = await fetch(
-      mode === "create" ? "/api/listings" : `/api/listings/${initial?.id}`,
-      {
-        method: mode === "create" ? "POST" : "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      },
-    );
+    try {
+      const res = await fetch(
+        mode === "create" ? "/api/listings" : `/api/listings/${initial?.id}`,
+        {
+          method: mode === "create" ? "POST" : "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "same-origin",
+          body: JSON.stringify(payload),
+        },
+      );
 
-    setSaving(false);
-    if (!res.ok) {
       const data = await res.json().catch(() => ({}));
-      setError(data.error || "Could not save property");
-      return;
-    }
+      setSaving(false);
+      if (!res.ok) {
+        setError(data.error || `Could not save property (${res.status})`);
+        return;
+      }
 
-    router.push("/admin");
-    router.refresh();
+      router.push("/admin");
+      router.refresh();
+    } catch {
+      setSaving(false);
+      setError("Network error while saving. Try again.");
+    }
   }
 
   return (
