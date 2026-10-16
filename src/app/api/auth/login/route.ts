@@ -1,14 +1,16 @@
 import { NextResponse } from "next/server";
-import { loginAdmin } from "@/lib/auth";
+import { attachAdminSession, verifyAdminPassword } from "@/lib/auth";
 
 export async function POST(request: Request) {
   const body = (await request.json()) as { password?: string };
   if (!body.password) {
     return NextResponse.json({ error: "Password required" }, { status: 400 });
   }
-  const ok = await loginAdmin(body.password);
-  if (!ok) {
+
+  if (!verifyAdminPassword(body.password)) {
     return NextResponse.json({ error: "Invalid password" }, { status: 401 });
   }
-  return NextResponse.json({ success: true });
+
+  const response = NextResponse.json({ success: true });
+  return attachAdminSession(response);
 }

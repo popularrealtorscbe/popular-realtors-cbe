@@ -28,9 +28,8 @@ export async function listProperties(options?: {
       return await supabaseListProperties(options);
     } catch (error) {
       console.error("[listings] Supabase list failed:", error);
-      // Fail soft on public pages so the site still loads (e.g. before schema is run)
-      if (!options?.includeSold) return [];
-      throw error;
+      // Fail soft so public + admin still load if DB is briefly unavailable
+      return [];
     }
   }
   return localListProperties(options);

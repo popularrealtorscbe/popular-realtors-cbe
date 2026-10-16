@@ -1,5 +1,6 @@
 -- Optional demo seed for your test Supabase project.
 -- Run after schema.sql
+-- Safe to re-run: skips rows whose slug already exists.
 
 insert into public.properties (
   title, slug, description, property_type, status, price,
@@ -55,4 +56,5 @@ insert into public.properties (
   'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80',
   array['https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1200&q=80'],
   true
-);
+)
+on conflict (slug) do nothing;

@@ -1,10 +1,8 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function AdminLoginPage() {
-  const router = useRouter();
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -13,18 +11,28 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError("");
-    const res = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    setLoading(false);
-    if (!res.ok) {
-      setError("Incorrect password. Try again.");
-      return;
+
+    try {
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ password }),
+      });
+
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "Incorrect password. Try again.");
+        setLoading(false);
+        return;
+      }
+
+      // Full navigation so the session cookie is sent on the next request
+      window.location.href = "/admin";
+    } catch {
+      setError("Login request failed. Check your connection and try again.");
+      setLoading(false);
     }
-    router.push("/admin");
-    router.refresh();
   }
 
   return (
@@ -50,6 +58,7 @@ export default function AdminLoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             autoFocus
+            autoComplete="current-password"
           />
         </div>
         {error && <p className="text-sm text-red-700">{error}</p>}
@@ -58,6 +67,8 @@ export default function AdminLoginPage() {
         </button>
         <p className="text-xs text-ink/50">
           Demo password: <code>popular@demo</code>
+          <br />
+          (Unless you set a different <code>ADMIN_PASSWORD</code> in Vercel)
         </p>
       </form>
     </div>
