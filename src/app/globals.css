@@ -1,26 +1,184 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ink: #10261c;
+  --forest: #1a4a34;
+  --leaf: #2f6b4f;
+  --copper: #b87333;
+  --copper-deep: #8f5a24;
+  --sand: #f3efe6;
+  --mist: #e7efe9;
+  --paper: #faf8f4;
+  --line: rgba(16, 38, 28, 0.12);
+  --shadow: 0 24px 60px rgba(16, 38, 28, 0.12);
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-ink: var(--ink);
+  --color-forest: var(--forest);
+  --color-leaf: var(--leaf);
+  --color-copper: var(--copper);
+  --color-copper-deep: var(--copper-deep);
+  --color-sand: var(--sand);
+  --color-mist: var(--mist);
+  --color-paper: var(--paper);
+  --font-display: var(--font-display);
+  --font-sans: var(--font-body);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(47, 107, 79, 0.12), transparent 60%),
+    radial-gradient(900px 400px at 90% 0%, rgba(184, 115, 51, 0.1), transparent 55%),
+    linear-gradient(180deg, #f7f4ee 0%, var(--paper) 40%, #eef3ef 100%);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), system-ui, sans-serif;
+  min-height: 100%;
+}
+
+::selection {
+  background: rgba(184, 115, 51, 0.28);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-shell {
+  width: min(1180px, calc(100% - 2rem));
+  margin-inline: auto;
+}
+
+.display {
+  font-family: var(--font-display), Georgia, serif;
+  letter-spacing: -0.03em;
+}
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+
+.grain::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  opacity: 0.08;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: soft-light;
+  z-index: 1;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+.animate-rise {
+  animation: rise 0.8s ease both;
+}
+
+.animate-rise-delay {
+  animation: rise 0.9s ease 0.12s both;
+}
+
+.animate-kenburns {
+  animation: kenburns 18s ease-out forwards;
+}
+
+.property-card {
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+.property-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: var(--forest);
+  color: white;
+  padding: 0.85rem 1.35rem;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--ink);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: white;
+  padding: 0.85rem 1.35rem;
+  font-weight: 600;
+  backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: white;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: white;
+  padding: 0.75rem 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  border-color: var(--leaf);
+  box-shadow: 0 0 0 3px rgba(47, 107, 79, 0.15);
+}
+
+.label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(16, 38, 28, 0.7);
+  margin-bottom: 0.4rem;
 }

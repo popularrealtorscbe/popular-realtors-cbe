@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Popular Realtors CBE
 
-## Getting Started
+Professional property website + agent dashboard for **Popular Realtors CBE** (Perur, Coimbatore).
 
-First, run the development server:
+## Stack
+
+- **Next.js** — public site + admin UI
+- **Supabase-ready** data layer (uses local JSON until Supabase keys are added)
+- **Vercel** — deployment target
+
+## Quick start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Agent dashboard
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- URL: [http://localhost:3000/admin](http://localhost:3000/admin)
+- Demo password: `popular@demo`
 
-## Learn More
+Add / edit / mark sold / delete listings — changes show on the public site immediately.
 
-To learn more about Next.js, take a look at the following resources:
+## Connect Supabase (optional, for production)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a project at [supabase.com](https://supabase.com)
+2. Run `supabase/schema.sql` in the SQL editor
+3. Copy Project URL + anon key into `.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
+ADMIN_PASSWORD=choose-a-strong-password
+```
 
-## Deploy on Vercel
+4. Restart `npm run dev` — the dashboard will show backend: `supabase`
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Until those keys exist, the app stores listings in `data/listings.json` (seeded with demo Coimbatore properties).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Scripts
+
+| Command        | Purpose              |
+|----------------|----------------------|
+| `npm run dev`  | Local development    |
+| `npm run build`| Production build     |
+| `npm run start`| Run production build |

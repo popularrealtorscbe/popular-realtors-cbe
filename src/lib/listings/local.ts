@@ -1,0 +1,125 @@
+import { promises as fs } from "fs";
+import path from "path";
+import { slugify } from "../format";
+import type { Property, PropertyInput } from "../types";
+import { SEED_LISTINGS } from "./seed";
+
+const DATA_PATH = path.join(process.cwd(), "data", "listings.json");
+
+async function ensureFile(): Promise<void> {
+  try {
+    await fs.access(DATA_PATH);
+  } catch {
+    await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
+    await fs.writeFile(DATA_PATH, JSON.stringify(SEED_LISTINGS, null, 2));
+  }
+}
+
+async function readAll(): Promise<Property[]> {
+  await ensureFile();
+  const raw = await fs.readFile(DATA_PATH, "utf8");
+  return JSON.parse(raw) as Property[];
+}
+
+async function writeAll(listings: Property[]): Promise<void> {
+  await fs.mkdir(path.dirname(DATA_PATH), { recursive: true });
+  await fs.writeFile(DATA_PATH, JSON.stringify(listings, null, 2));
+}
+
+export async function localListProperties(options?: {
+  includeSold?: boolean;
+  featuredOnly?: boolean;
+}): Promise<Property[]> {
+  let listings = await readAll();
+  if (!options?.includeSold) {
+    listings = listings.filter((p) => p.status === "available");
+  }
+  if (options?.featuredOnly) {
+    listings = listings.filter((p) => p.featured && p.status === "available");
+  }
+  return listings.sort(
+    (a, b) =>
+      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime(),
+  );
+}
+
+export async function localGetProperty(id: string): Promise<Property | null> {
+  const listings = await readAll();
+  return (
+    listings.find((p) => p.id === id || p.slug === id) ?? null
+  );
+}
+
+export async function localCreateProperty(
+  input: PropertyInput,
+): Promise<Property> {
+  const listings = await readAll();
+  const now = new Date().toISOString();
+  const title = input.title.trim();
+  const property: Property = {
+    id: input.id ?? `prop-${Date.now()}`,
+    title,
+    slug: input.slug?.trim() || slugify(title),
+    description: input.description,
+    property_type: input.property_type,
+    status: input.status,
+    price: Number(input.price),
+    area_sqft: input.area_sqft ?? null,
+    area_acres: input.area_acres ?? null,
+    location: input.location,
+    city: input.city || "Coimbatore",
+    locality: input.locality,
+    features: input.features ?? [],
+    images: input.images?.length
+      ? input.images
+      : [
+          "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80",
+        ],
+    featured: Boolean(input.featured),
+    created_at: now,
+    updated_at: now,
+    expires_at: input.expires_at ?? null,
+  };
+  listings.unshift(property);
+  await writeAll(listings);
+  return property;
+}
+
+export async function localUpdateProperty(
+  id: string,
+  input: Partial<PropertyInput>,
+): Promise<Property | null> {
+  const listings = await readAll();
+  const index = listings.findIndex((p) => p.id === id);
+  if (index === -1) return null;
+
+  const current = listings[index];
+  const title = input.title?.trim() ?? current.title;
+  const updated: Property = {
+    ...current,
+    ...input,
+    title,
+    slug: input.slug?.trim() || (input.title ? slugify(title) : current.slug),
+    price: input.price !== undefined ? Number(input.price) : current.price,
+    area_sqft:
+      input.area_sqft !== undefined ? input.area_sqft : current.area_sqft,
+    area_acres:
+      input.area_acres !== undefined ? input.area_acres : current.area_acres,
+    features: input.features ?? current.features,
+    images: input.images ?? current.images,
+    featured:
+      input.featured !== undefined ? Boolean(input.featured) : current.featured,
+    updated_at: new Date().toISOString(),
+  };
+  listings[index] = updated;
+  await writeAll(listings);
+  return updated;
+}
+
+export async function localDeleteProperty(id: string): Promise<boolean> {
+  const listings = await readAll();
+  const next = listings.filter((p) => p.id !== id);
+  if (next.length === listings.length) return false;
+  await writeAll(next);
+  return true;
+}
