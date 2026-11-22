@@ -1,6 +1,7 @@
 import { ContactFab } from "@/components/site/ContactFab";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
+import { JsonLd } from "@/components/site/JsonLd";
 
 export default function SiteLayout({
   children,
@@ -9,6 +10,7 @@ export default function SiteLayout({
 }) {
   return (
     <>
+      <JsonLd />
       <Header />
       <main className="flex-1 pb-20">{children}</main>
       <Footer />
