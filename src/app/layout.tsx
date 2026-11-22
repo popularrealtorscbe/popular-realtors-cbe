@@ -17,16 +17,29 @@ const display = Newsreader({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE.siteUrl),
   title: {
     default: SITE.metaTitle,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
   applicationName: SITE.name,
+  keywords: [
+    "Popular Realtors CBE",
+    "Popular Realtors Coimbatore",
+    "land brokers Coimbatore",
+    "plots for sale Perur",
+    "agricultural land Coimbatore",
+    "buy sell plots best price",
+  ],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     title: SITE.metaTitle,
     description: SITE.description,
     siteName: SITE.name,
+    url: SITE.siteUrl,
     locale: "en_IN",
     type: "website",
   },
@@ -34,6 +47,10 @@ export const metadata: Metadata = {
     card: "summary",
     title: SITE.metaTitle,
     description: SITE.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 

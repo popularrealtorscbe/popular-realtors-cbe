@@ -1,6 +1,9 @@
 export const SITE = {
   name: "Popular Realtors Coimbatore",
   shortName: "Popular Realtors",
+  /** Production domain (GoDaddy → Netlify) */
+  domain: "popularrealtorscbe.com",
+  siteUrl: "https://popularrealtorscbe.com",
   /** Matches JustDial: POPULAR REALTORS CBE (BUYING & SELLING LOW PRICE) */
   tagline: "Buying & selling at best prices",
   metaTitle: "Popular Realtors Coimbatore — Buying & Selling at Best Prices",
