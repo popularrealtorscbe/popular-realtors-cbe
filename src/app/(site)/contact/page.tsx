@@ -28,15 +28,25 @@ export default function ContactPage() {
           <div className="mt-8 space-y-4 text-sm">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-                Office
+                Contact person
               </div>
-              <p className="mt-1 text-ink">{SITE.address}</p>
+              <p className="mt-1 text-ink">{SITE.contactPerson}</p>
             </div>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
                 Phone
               </div>
-              <p className="mt-1 text-ink">{SITE.phone}</p>
+              <p className="mt-1 text-ink">
+                <a href={`tel:${SITE.phone}`} className="hover:text-blue">
+                  {SITE.phone}
+                </a>
+              </p>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                Office
+              </div>
+              <p className="mt-1 text-ink">{SITE.address}</p>
             </div>
           </div>
 

@@ -51,8 +51,13 @@ export function Footer() {
             Office
           </div>
           <div className="mt-3 space-y-1 text-sm text-white/80">
+            <p>{SITE.contactPerson}</p>
+            <p>
+              <a href={`tel:${SITE.phone}`} className="hover:text-white">
+                {SITE.phone}
+              </a>
+            </p>
             <p>{SITE.address}</p>
-            <p>{SITE.phone}</p>
           </div>
         </div>
       </div>

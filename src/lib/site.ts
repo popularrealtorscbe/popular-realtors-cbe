@@ -8,8 +8,9 @@ export const SITE = {
   yearsInBusiness: 20,
   location: "Perur, Coimbatore",
   city: "Coimbatore",
-  phone: "+91 98765 43210",
-  whatsapp: "919876543210",
+  contactPerson: "Ramraj Kalappagounder",
+  phone: "+91 99433 95067",
+  whatsapp: "919943395067",
   address:
     "No 4/118, School Road, Thethipalayam, Perur, Coimbatore-641010, Tamil Nadu",
   /** Public JustDial listing for extra trust / discovery */
