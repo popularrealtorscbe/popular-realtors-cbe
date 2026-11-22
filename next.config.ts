@@ -1,6 +1,12 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Allow Cloudflare / ngrok quick tunnels so mobile preview can load /_next assets
+  allowedDevOrigins: [
+    "*.trycloudflare.com",
+    "*.ngrok-free.app",
+    "*.ngrok.app",
+  ],
   images: {
     remotePatterns: [
       {

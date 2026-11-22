@@ -50,7 +50,7 @@ Supabase → **Project Settings → API**:
 Example `.env.local`:
 
 ```env
-ADMIN_PASSWORD=popular@demo
+ADMIN_PASSWORD=your-strong-password
 
 NEXT_PUBLIC_SUPABASE_URL=https://xxxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
@@ -108,7 +108,7 @@ You stay as collaborator on Vercel/GitHub if he wants ongoing updates.
 - [ ] His Supabase project + `schema.sql` run  
 - [ ] Real listings added (or seeded) in his DB  
 - [ ] Vercel env vars point to **his** Supabase (not yours)  
-- [ ] Strong new `ADMIN_PASSWORD` (not `popular@demo`)  
+- [ ] Strong new `ADMIN_PASSWORD` (set in `.env.local` / host env)  
 - [ ] Domain DNS → his Vercel  
 - [ ] Phone / WhatsApp / email / address updated in `src/lib/site.ts`  
 - [ ] Your test Supabase can be paused/deleted later  

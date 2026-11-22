@@ -8,7 +8,9 @@ import type { PropertyType } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Properties in Coimbatore",
+  title: "Properties — Buying & Selling at Best Prices",
+  description:
+    "Land, plots and sites listed by Popular Realtors Coimbatore. Buying & selling at best prices.",
 };
 
 export default async function PropertiesPage({

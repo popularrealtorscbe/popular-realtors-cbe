@@ -30,7 +30,7 @@ export default async function PropertyDetailPage({
   const embedSrc = mapsEmbedUrl(property.maps_url || "");
 
   const waText = encodeURIComponent(
-    `Hi, I'm interested in "${property.title}" listed on Popular Realtors CBE.`,
+    `Hi, I'm interested in "${property.title}" listed on Popular Realtors Coimbatore.`,
   );
 
   return (

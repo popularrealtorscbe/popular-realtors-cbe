@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 
 type Props = {
@@ -18,9 +17,12 @@ export function BrandLogo({
   const width = Math.round(height * 1.75);
 
   const img = (
-    <Image
+    // Plain <img> avoids Next/Image hydration mismatches behind tunnels
+    // (absolute localhost URLs vs public tunnel host).
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
       src="/brand/logo-popular-realtors.png"
-      alt="Popular Realtors CBE · Real Estate"
+      alt="Popular Realtors Coimbatore — Buying & selling at best prices"
       width={width}
       height={height}
       className={`w-auto object-contain object-left ${
@@ -31,8 +33,6 @@ export function BrandLogo({
         width: "auto",
         maxWidth: variant === "header" ? 220 : 260,
       }}
-      priority={variant === "header"}
-      unoptimized
     />
   );
 

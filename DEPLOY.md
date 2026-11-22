@@ -49,7 +49,7 @@ git push origin main
 Create/replace `.env.local` in the project root:
 
 ```env
-ADMIN_PASSWORD=popular@demo
+ADMIN_PASSWORD=your-strong-password
 NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ....
 SUPABASE_SERVICE_ROLE_KEY=eyJ....
@@ -59,7 +59,7 @@ SUPABASE_SERVICE_ROLE_KEY=eyJ....
 npm run dev -- -H 0.0.0.0 -p 3000
 ```
 
-Open http://localhost:3000/admin → password `popular@demo`  
+Open http://localhost:3000/admin → password from `ADMIN_PASSWORD`  
 Dashboard must say **backend: supabase**.
 
 ---
@@ -71,7 +71,7 @@ Dashboard must say **backend: supabase**.
 3. **Environment Variables** (Production + Preview + Development):
 
 ```text
-ADMIN_PASSWORD=popular@demo
+ADMIN_PASSWORD=your-strong-password
 NEXT_PUBLIC_SUPABASE_URL=…from Supabase
 NEXT_PUBLIC_SUPABASE_ANON_KEY=…from Supabase
 SUPABASE_SERVICE_ROLE_KEY=…from Supabase

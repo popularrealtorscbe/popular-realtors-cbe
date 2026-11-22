@@ -4,7 +4,7 @@ import type { NextResponse } from "next/server";
 import { ADMIN_COOKIE_NAME } from "./constants";
 
 function getAdminPassword(): string {
-  return (process.env.ADMIN_PASSWORD || "popular@demo").trim();
+  return (process.env.ADMIN_PASSWORD || "").trim();
 }
 
 function hashToken(value: string): string {
@@ -42,6 +42,7 @@ export async function isAdminAuthenticated(): Promise<boolean> {
 
 export function verifyAdminPassword(password: string): boolean {
   const expected = getAdminPassword();
+  if (!expected) return false;
   const provided = password.trim();
   const a = Buffer.from(provided);
   const b = Buffer.from(expected);

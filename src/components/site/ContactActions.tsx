@@ -18,7 +18,7 @@ export function WhatsAppIcon({ className = "h-4 w-4" }: { className?: string }) 
 export function whatsappHref(message?: string) {
   const text =
     message ||
-    "Hi Popular Realtors CBE, I want to enquire about a property.";
+    "Hi Popular Realtors Coimbatore, I want to enquire about a property.";
   return `https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(text)}`;
 }
 

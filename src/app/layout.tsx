@@ -18,13 +18,22 @@ const display = Newsreader({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE.name} | Properties in Coimbatore`,
+    default: SITE.metaTitle,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
-  icons: {
-    icon: [{ url: "/brand/logo-icon.png", type: "image/png" }],
-    apple: [{ url: "/brand/logo-icon.png" }],
+  applicationName: SITE.name,
+  openGraph: {
+    title: SITE.metaTitle,
+    description: SITE.description,
+    siteName: SITE.name,
+    locale: "en_IN",
+    type: "website",
+  },
+  twitter: {
+    card: "summary",
+    title: SITE.metaTitle,
+    description: SITE.description,
   },
 };
 

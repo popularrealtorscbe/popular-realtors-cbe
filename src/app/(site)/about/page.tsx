@@ -6,6 +6,8 @@ import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata = {
   title: "About",
+  description:
+    "Popular Realtors Coimbatore — buying & selling at best prices. Perur brokers for agri land, plots and sites.",
 };
 
 const COLLAGE = SITE_IMAGES.collage;

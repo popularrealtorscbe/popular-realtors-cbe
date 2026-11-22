@@ -5,6 +5,8 @@ import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata = {
   title: "Contact",
+  description:
+    "Call Popular Realtors Coimbatore — buying & selling at best prices. Perur office, Thethipalayam.",
 };
 
 export default function ContactPage() {
@@ -35,12 +37,6 @@ export default function ContactPage() {
                 Phone
               </div>
               <p className="mt-1 text-ink">{SITE.phone}</p>
-            </div>
-            <div>
-              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
-                Email
-              </div>
-              <p className="mt-1 text-ink">{SITE.email}</p>
             </div>
           </div>
 

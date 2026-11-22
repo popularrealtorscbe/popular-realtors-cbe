@@ -29,7 +29,7 @@ export function SearchHero() {
               {SITE.name}
             </h1>
             <p className="mt-4 max-w-md text-base text-white/85 sm:text-lg">
-              {SITE.tagline} Agri land, plots and sites from our Perur office.
+              {SITE.tagline}. Agri land, plots and sites from our Perur office.
               Confused? Call us. We listen and help you choose.
             </p>
             <div className="mt-7">

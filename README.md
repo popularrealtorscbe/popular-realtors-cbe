@@ -1,6 +1,6 @@
-# Popular Realtors CBE
+# Popular Realtors Coimbatore
 
-Professional property website + agent dashboard for **Popular Realtors CBE** (Perur, Coimbatore).
+Professional property website + agent dashboard for **Popular Realtors Coimbatore** — buying & selling at best prices (Perur, Coimbatore).
 
 ## Stack
 
@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000)
 ### Agent dashboard
 
 - URL: [http://localhost:3000/admin](http://localhost:3000/admin)
-- Demo password: `popular@demo`
+- Password: value of `ADMIN_PASSWORD` in `.env.local`
 
 Add / edit / mark sold / delete listings — changes show on the public site immediately.
 

@@ -26,8 +26,8 @@ export function Hero() {
             {SITE.name}
           </h1>
           <p className="mt-5 max-w-xl text-lg text-white/80 sm:text-xl">
-            {SITE.tagline} Agri land, plots and sites
-            listed clearly, priced fairly, managed by a trusted Perur office.
+            {SITE.tagline}. Agri land, plots and sites listed clearly, priced
+            fairly, managed by a trusted Perur office.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link href="/properties" className="btn-primary">

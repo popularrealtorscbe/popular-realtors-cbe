@@ -65,11 +65,6 @@ export default function AdminLoginPage() {
         <button type="submit" className="btn-primary w-full" disabled={loading}>
           {loading ? "Checking…" : "Enter dashboard"}
         </button>
-        <p className="text-xs text-muted">
-          Demo password: <code>popular@demo</code>
-          <br />
-          (Unless you set a different <code>ADMIN_PASSWORD</code> in Vercel)
-        </p>
       </form>
     </div>
   );

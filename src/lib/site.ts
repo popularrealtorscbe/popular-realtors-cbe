@@ -1,21 +1,22 @@
 export const SITE = {
-  name: "Popular Realtors CBE",
+  name: "Popular Realtors Coimbatore",
   shortName: "Popular Realtors",
-  tagline: "Buying & selling land at the best prices.",
+  /** Matches JustDial: POPULAR REALTORS CBE (BUYING & SELLING LOW PRICE) */
+  tagline: "Buying & selling at best prices",
+  metaTitle: "Popular Realtors Coimbatore — Buying & Selling at Best Prices",
   established: 2006,
   yearsInBusiness: 20,
   location: "Perur, Coimbatore",
   city: "Coimbatore",
   phone: "+91 98765 43210",
   whatsapp: "919876543210",
-  email: "info@popularrealtorscbe.com",
   address:
     "No 4/118, School Road, Thethipalayam, Perur, Coimbatore-641010, Tamil Nadu",
   /** Public JustDial listing for extra trust / discovery */
   justdialUrl:
     "https://www.justdial.com/Coimbatore/POPULAR-REALTORS-CBE-BUYING-SELLING-LOW-PRICE-Perur/0422PX422-X422-210927180820-E7Q7_BZDET",
   description:
-    "Perur brokers for agri land, plots and sites. We buy and sell at the best prices we can get. No houses or high-rise. Call us if you are unsure.",
+    "Popular Realtors Coimbatore — buying & selling at best prices. Agri land, plots and sites from our Perur office. No houses or high-rise. Call us if you are unsure.",
   specialties: [
     "Agricultural land",
     "Agri plots & sites",
