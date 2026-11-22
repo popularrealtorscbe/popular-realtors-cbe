@@ -1,13 +1,7 @@
-import type { Metadata } from "next";
-import { Bricolage_Grotesque, Manrope } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Manrope, Newsreader } from "next/font/google";
 import { SITE } from "@/lib/site";
 import "./globals.css";
-
-const display = Bricolage_Grotesque({
-  variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
-});
 
 const body = Manrope({
   variable: "--font-body",
@@ -15,21 +9,38 @@ const body = Manrope({
   weight: ["400", "500", "600", "700"],
 });
 
+const display = Newsreader({
+  variable: "--font-display",
+  subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal"],
+});
+
 export const metadata: Metadata = {
   title: {
-    default: `${SITE.name} | ${SITE.tagline}`,
+    default: `${SITE.name} | Properties in Coimbatore`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
+  icons: {
+    icon: [{ url: "/brand/logo-icon.png", type: "image/png" }],
+    apple: [{ url: "/brand/logo-icon.png" }],
+  },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#0b2341",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${display.variable} ${body.variable} h-full antialiased`}
+      className={`${body.variable} ${display.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col font-sans">{children}</body>
     </html>
   );
 }

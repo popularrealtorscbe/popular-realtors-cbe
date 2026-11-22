@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { MapPin } from "lucide-react";
 import { formatArea, formatPrice, propertyTypeLabel } from "@/lib/format";
 import { getThumbnail } from "@/lib/images";
 import type { Property } from "@/lib/types";
@@ -11,44 +10,46 @@ export function PropertyCard({ property }: { property: Property }) {
   return (
     <Link
       href={`/properties/${property.slug || property.id}`}
-      className="property-card group block overflow-hidden bg-white"
+      className="listing-card group block w-full"
     >
-      <div className="relative aspect-[4/3] overflow-hidden">
+      <div className="relative aspect-[5/4] overflow-hidden bg-sand">
         <Image
           src={image}
           alt={property.title}
           fill
-          className="object-cover transition duration-700 group-hover:scale-105"
-          sizes="(max-width: 768px) 100vw, 33vw"
-          unoptimized={image.startsWith("/uploads/")}
+          className="object-cover transition duration-500 ease-out group-hover:scale-[1.04]"
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 240px"
+          unoptimized={
+            image.startsWith("/uploads/") ||
+            image.startsWith("/listings/") ||
+            image.endsWith(".svg") ||
+            image.includes("supabase.co")
+          }
         />
-        <div className="absolute left-3 top-3 bg-forest px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide text-white">
-          {propertyTypeLabel(property.property_type)}
-        </div>
-      </div>
-      <div className="space-y-3 p-5">
-        <div className="flex items-start justify-between gap-3">
-          <h3 className="display text-xl leading-snug text-ink">
-            {property.title}
-          </h3>
-        </div>
-        <div className="flex items-center gap-1.5 text-sm text-ink/65">
-          <MapPin className="h-4 w-4 text-copper" />
-          {property.location}
-        </div>
-        <div className="flex items-end justify-between border-t border-[var(--line)] pt-3">
-          <div>
-            <div className="text-xs uppercase tracking-[0.14em] text-ink/45">
-              Price
-            </div>
-            <div className="text-lg font-semibold text-forest">
-              {formatPrice(property.price)}
-            </div>
+        <div className="absolute bottom-2 left-2 max-w-[85%] bg-white/95 px-2.5 py-1.5 backdrop-blur-sm">
+          <div className="text-[13px] font-bold leading-tight text-ink">
+            {formatPrice(property.price)}
+            {property.negotiable ? (
+              <span className="ml-1 text-[10px] font-semibold text-green-accent">
+                Negotiable
+              </span>
+            ) : null}
           </div>
-          <div className="text-right text-sm text-ink/60">
+          <div className="text-[10px] font-medium text-muted">
             {formatArea(property)}
           </div>
         </div>
+      </div>
+      <div className="space-y-1 px-3 py-3">
+        <div className="truncate text-[12px] font-medium text-ink">
+          {propertyTypeLabel(property.property_type)}
+          {property.facing ? ` · ${property.facing}` : ""}
+        </div>
+        <p className="truncate text-[12px] text-muted">
+          {property.site_no
+            ? `${property.site_no}, ${property.locality}`
+            : property.locality}
+        </p>
       </div>
     </Link>
   );

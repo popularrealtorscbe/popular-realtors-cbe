@@ -1,13 +1,14 @@
 import { Suspense } from "react";
 import { PropertyCard } from "@/components/site/PropertyCard";
 import { PropertyFilters } from "@/components/site/PropertyFilters";
+import { Reveal } from "@/components/site/Reveal";
 import { listProperties } from "@/lib/listings/store";
 import type { PropertyType } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Properties",
+  title: "Properties in Coimbatore",
 };
 
 export default async function PropertiesPage({
@@ -19,11 +20,13 @@ export default async function PropertiesPage({
 
   let listings = await listProperties();
   if (type !== "all") {
-    listings = listings.filter((p) => p.property_type === (type as PropertyType));
+    listings = listings.filter(
+      (p) => p.property_type === (type as PropertyType),
+    );
   }
   if (q) {
     listings = listings.filter((p) =>
-      [p.title, p.location, p.locality, p.description]
+      [p.title, p.location, p.locality, p.description, p.site_no, p.address]
         .join(" ")
         .toLowerCase()
         .includes(q),
@@ -31,39 +34,41 @@ export default async function PropertiesPage({
   }
 
   return (
-    <div className="pt-28 pb-20">
+    <div className="bg-page pb-16 pt-10 md:pt-12">
       <div className="site-shell">
-        <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper">
-          Browse inventory
-        </p>
-        <h1 className="display mt-3 text-4xl text-ink md:text-5xl">
-          Properties for sale
-        </h1>
-        <p className="mt-3 max-w-2xl text-ink/70">
-          Residential plots, agricultural land, industrial sites, and
-          ready-to-move homes across Coimbatore. Stock listings for demo —
-          replace anytime from the agent dashboard.
-        </p>
+        <Reveal>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+            Buy & sell
+          </p>
+          <h1 className="display mt-2 text-3xl text-navy md:text-5xl">
+            Land, plots and sites in Coimbatore
+          </h1>
+          <p className="mt-3 max-w-xl text-sm text-muted">
+            Agri land and sites we are brokering. Best-price focus. If anything
+            is unclear, call us.
+          </p>
+        </Reveal>
 
-        <div className="mt-8">
-          <Suspense fallback={<div className="h-24 bg-white/60" />}>
+        <div className="mt-6">
+          <Suspense fallback={<div className="h-16 bg-white" />}>
             <PropertyFilters />
           </Suspense>
         </div>
 
-        <div className="mt-6 text-sm text-ink/55">
-          {listings.length} propert{listings.length === 1 ? "y" : "ies"} found
+        <div className="mt-5 text-sm text-muted">
+          {listings.length} listing{listings.length === 1 ? "" : "s"}
         </div>
 
-        <div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 md:gap-4 xl:grid-cols-4">
           {listings.map((property) => (
             <PropertyCard key={property.id} property={property} />
           ))}
         </div>
 
         {listings.length === 0 && (
-          <div className="mt-10 border border-dashed border-[var(--line)] bg-white/70 p-10 text-center text-ink/60">
-            No properties match this filter. Try another locality or type.
+          <div className="mt-8 border border-dashed border-line bg-white px-6 py-12 text-center text-muted">
+            No matches. Try another locality, or call the agent with your
+            requirement.
           </div>
         )}
       </div>

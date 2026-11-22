@@ -17,13 +17,13 @@ export default async function EditPropertyPage({
   if (!property) notFound();
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <h1 className="display text-4xl text-ink">Edit property</h1>
-      <p className="mt-2 text-ink/65">
+    <div className="mx-auto max-w-5xl">
+      <h1 className="display text-3xl text-ink sm:text-4xl">Edit property</h1>
+      <p className="mt-2 text-sm text-muted sm:text-base">
         Changes sync to the website immediately. Mark as Sold to hide from
-        buyers.
+        buyers. Preview updates live while you edit.
       </p>
-      <div className="mt-8">
+      <div className="mt-6 sm:mt-8">
         <PropertyForm mode="edit" initial={property} />
       </div>
     </div>

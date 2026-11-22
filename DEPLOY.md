@@ -1,90 +1,115 @@
-# Deploy test: Your Supabase + Vercel
+# Ship checklist — test on YOUR Gmail first, client tomorrow
 
-Goal: Admin add/edit/sold → saved in **Supabase** → public website updates immediately.
-
-Your repo: `https://github.com/dhanwanth-dev/popular-realtors-cbe`
-
----
-
-## Part 1 — Supabase (your account)
-
-### 1. Login
-Open: https://supabase.com/dashboard  
-Sign in (GitHub/Google) with **your** account.
-
-### 2. Create project
-1. **New project**
-2. Name: `popular-realtors-dev`
-3. Database password: save it
-4. Region: closest available
-5. Plan: **Free** → Create (wait until green/ready)
-
-### 3. Create table + storage bucket
-1. Left menu → **SQL Editor** → New query  
-2. Open this file in your project: `supabase/schema.sql`  
-3. Copy **all** → paste → **Run**  
-4. Confirm: **Table Editor** shows `properties`  
-5. Confirm: **Storage** shows bucket `property-images` (public)
-
-Optional demo rows: run `supabase/seed.sql` the same way.
-
-### 4. Copy keys
-**Project Settings → API**
-
-Copy these 3 values (keep service_role secret):
-
-| Name | Copy from |
-|------|-----------|
-| Project URL | Project URL |
-| anon public | `anon` `public` key |
-| service_role | `service_role` secret key |
-
-You will paste them into Vercel next (not into GitHub).
+**Today:** your GitHub + your Supabase + your Vercel  
+**Tomorrow:** same code, his Supabase / Vercel / domain  
+**Later:** logo (separate)
 
 ---
 
-## Part 2 — Vercel (your account)
+## Before anything — push latest code
 
-### 1. Login & import
-1. Open: https://vercel.com  
-2. Sign in with **GitHub** (same account that owns the repo)  
-3. **Add New… → Project**  
-4. Import `popular-realtors-cbe`  
-5. **Do not deploy yet** — first add env vars (or deploy then add + redeploy)
+All agent dashboard / Maps / mobile work must be on GitHub before Vercel can use it.
 
-### 2. Environment variables
-In the import screen (or **Project → Settings → Environment Variables**), add for **Production, Preview, Development**:
-
-```text
-ADMIN_PASSWORD = popular@demo
-NEXT_PUBLIC_SUPABASE_URL = https://xxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY = eyJ....
-SUPABASE_SERVICE_ROLE_KEY = eyJ....
+```bash
+cd /data/master/side_hustle/Popular_Realtors_cbe
+git add .
+git status   # confirm .env.local is NOT listed
+git commit -m "Agent-only admin, Maps+address, live preview, mobile CRUD"
+git push origin main
 ```
 
-- Use your real Supabase values  
-- `SUPABASE_SERVICE_ROLE_KEY` must **not** start with `NEXT_PUBLIC_`
+---
 
-### 3. Deploy
-Click **Deploy**. Wait for “Ready”. Open the `.vercel.app` URL.
+## STEP 1 — Supabase (your Gmail / Google account)
+
+1. Open https://supabase.com/dashboard → sign in with **your** Google/GitHub.
+2. **New project** → name `popular-realtors-dev` → set DB password (save it) → Free → Create.
+3. Wait until project is **healthy / green**.
+4. Left menu → **SQL Editor** → New query.
+5. Open `supabase/schema.sql` in this repo → copy **everything** → paste → **Run**.
+6. Confirm:
+   - **Table Editor** → `properties` exists (columns include `address`, `maps_url`)
+   - **Storage** → bucket `property-images` (public)
+7. (Optional) Run `supabase/seed.sql` for demo listings.
+8. If the project already existed before plot fields: also run `supabase/add-plot-fields.sql`.
+
+### Copy 3 keys
+**Project Settings → API**
+
+| Paste into Vercel / `.env.local` as | Copy from Supabase |
+|------------------------------------|--------------------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | `anon` `public` |
+| `SUPABASE_SERVICE_ROLE_KEY` | `service_role` (secret — Reveal) |
 
 ---
 
-## Part 3 — Prove live sync (this is the test)
+## STEP 2 — Local `.env.local` (quick proof before Vercel)
 
-1. Open live site: `https://your-app.vercel.app/properties`  
-2. Open admin: `https://your-app.vercel.app/admin`  
-   Password: `popular@demo`  
-3. Dashboard should show **backend: supabase**  
-   (If it says `local`, env vars are missing → fix vars → Redeploy)  
-4. **Add property** with thumbnail + gallery → Save  
-5. Refresh `/properties` — new listing appears  
-6. In Supabase → **Table Editor → properties** — new row is there  
-7. In Supabase → **Storage → property-images** — uploaded photos appear  
-8. In admin → **Mark sold** → refresh public site — listing gone  
-9. Supabase table still has the row with `status = sold`
+Create/replace `.env.local` in the project root:
 
-That proves: admin → Supabase → website.
+```env
+ADMIN_PASSWORD=popular@demo
+NEXT_PUBLIC_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ....
+SUPABASE_SERVICE_ROLE_KEY=eyJ....
+```
+
+```bash
+npm run dev -- -H 0.0.0.0 -p 3000
+```
+
+Open http://localhost:3000/admin → password `popular@demo`  
+Dashboard must say **backend: supabase**.
+
+---
+
+## STEP 3 — Vercel (your account) — production-like test URL
+
+1. https://vercel.com → sign in with the **same GitHub** that owns `popular-realtors-cbe`.
+2. **Add New → Project** → import `popular-realtors-cbe`.
+3. **Environment Variables** (Production + Preview + Development):
+
+```text
+ADMIN_PASSWORD=popular@demo
+NEXT_PUBLIC_SUPABASE_URL=…from Supabase
+NEXT_PUBLIC_SUPABASE_ANON_KEY=…from Supabase
+SUPABASE_SERVICE_ROLE_KEY=…from Supabase
+```
+
+4. Deploy → wait for Ready → open the `.vercel.app` URL.
+
+---
+
+## STEP 4 — Prove live sync (do this checklist)
+
+| # | Action | Pass when |
+|---|--------|-----------|
+| 1 | Open `/admin` on Vercel URL | Login works |
+| 2 | Dashboard header | Shows **backend: supabase** |
+| 3 | **Add property** — title, price, locality, features, Maps link, upload photos | Saves without error |
+| 4 | Open `/properties` | New card appears |
+| 5 | Supabase → Table Editor → `properties` | New row present |
+| 6 | Supabase → Storage → `property-images` | Photos present |
+| 7 | Phone + desktop: browse site, open detail, Maps embed | Looks good, taps work |
+| 8 | Admin on phone: edit / mark sold / delete | Works; sold hides from public |
+
+---
+
+## STEP 5 — UI / nativeness pass (your eyes)
+
+**Public site (phone + desktop):** Home, Buy filters, property detail, Call/WhatsApp, About, Contact.  
+**Agent dashboard (phone + desktop):** Login, list, Add with live preview, image upload, Maps paste + address, Edit, Mark sold, Delete.
+
+---
+
+## Tomorrow — client handover (his account)
+
+1. New Supabase project under **his** email → run `schema.sql` again.  
+2. New/transfer Vercel under **his** account → env vars = **his** keys + strong `ADMIN_PASSWORD`.  
+3. Domain → his Vercel DNS.  
+4. Update phone/WhatsApp/email in `src/lib/site.ts` if needed.  
+5. Logo — separate session.
 
 ---
 
@@ -92,15 +117,8 @@ That proves: admin → Supabase → website.
 
 | Symptom | Fix |
 |---------|-----|
-| Site builds but listings empty | Run `schema.sql` (and optional `seed.sql`) |
-| backend still `local` on Vercel | Env vars not set / wrong project → Redeploy after saving |
-| Upload fails | Confirm `property-images` bucket exists (from schema.sql) |
-| Can’t add listing | Check `SUPABASE_SERVICE_ROLE_KEY` is correct |
-| Images broken | Wait for deploy with latest `next.config` image hosts |
-
----
-
-## Localhost tip
-
-If local tab hangs: hard refresh, or use the Vercel URL instead.  
-Local only uses Supabase after you put the same 3 keys in `.env.local` and restart `npm run dev`.
+| `backend: local` | Missing Supabase env → save vars → Redeploy / restart `npm run dev` |
+| permission denied on save | Re-run bottom of `schema.sql` (grants) or `fix-permissions.sql` |
+| Upload fails | Confirm `property-images` bucket exists |
+| Columns missing | Re-run `schema.sql` (or `add-address-maps.sql`) |
+| Empty listings | Table empty — add via admin or run `seed.sql` |

@@ -23,7 +23,7 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ error: "Unauthorized — please log in again." }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
   }
 
   if (getDataBackend() !== "supabase") {
@@ -52,6 +52,8 @@ export async function POST(request: Request) {
       locality: body.locality || body.location || "Coimbatore",
       location:
         body.location || `${body.locality || "Coimbatore"}, Coimbatore`,
+      address: body.address || "",
+      maps_url: body.maps_url || "",
       description: body.description || "",
       features: body.features || [],
       thumbnail: body.thumbnail || body.images?.[0] || "",
@@ -59,6 +61,12 @@ export async function POST(request: Request) {
       featured: Boolean(body.featured),
       area_sqft: body.area_sqft ?? null,
       area_acres: body.area_acres ?? null,
+      area_cents: body.area_cents ?? null,
+      price_per_cent: body.price_per_cent ?? null,
+      dimensions: body.dimensions || "",
+      site_no: body.site_no || "",
+      facing: body.facing || "",
+      negotiable: Boolean(body.negotiable),
       expires_at: body.expires_at ?? null,
     });
 

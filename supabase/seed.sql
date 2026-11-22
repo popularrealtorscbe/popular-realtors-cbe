@@ -4,7 +4,7 @@
 
 insert into public.properties (
   title, slug, description, property_type, status, price,
-  area_sqft, area_acres, location, city, locality, features, thumbnail, images, featured
+  area_sqft, area_acres, location, city, locality, address, maps_url, features, thumbnail, images, featured
 ) values
 (
   'DTCP Approved Residential Plot – Perur',
@@ -18,6 +18,8 @@ insert into public.properties (
   'Perur, Coimbatore',
   'Coimbatore',
   'Perur',
+  '',
+  '',
   array['DTCP Approved', 'Clear Title', 'Corner Plot'],
   'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1200&q=80',
   array['https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=1200&q=80'],
@@ -35,6 +37,8 @@ insert into public.properties (
   'Thondamuthur, Coimbatore',
   'Coimbatore',
   'Thondamuthur',
+  '',
+  '',
   array['Borewell', 'Fertile Soil', 'Farm Road Access'],
   'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1200&q=80',
   array['https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200&q=80'],
@@ -52,6 +56,8 @@ insert into public.properties (
   'Madukkarai, Coimbatore',
   'Coimbatore',
   'Madukkarai',
+  '',
+  '',
   array['NH Access', '3-Phase Power Nearby'],
   'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=1200&q=80',
   array['https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=1200&q=80'],

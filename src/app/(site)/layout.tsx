@@ -1,3 +1,4 @@
+import { ContactFab } from "@/components/site/ContactFab";
 import { Footer } from "@/components/site/Footer";
 import { Header } from "@/components/site/Header";
 
@@ -9,8 +10,9 @@ export default function SiteLayout({
   return (
     <>
       <Header />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 pb-20">{children}</main>
       <Footer />
+      <ContactFab />
     </>
   );
 }

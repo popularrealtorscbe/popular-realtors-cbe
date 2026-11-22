@@ -27,7 +27,7 @@ export async function PATCH(
   context: RouteContext<"/api/listings/[id]">,
 ) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ error: "Unauthorized — please log in again." }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
   }
   try {
     const { id } = await context.params;
@@ -49,7 +49,7 @@ export async function DELETE(
   context: RouteContext<"/api/listings/[id]">,
 ) {
   if (!(await isAdminAuthenticated())) {
-    return NextResponse.json({ error: "Unauthorized — please log in again." }, { status: 401 });
+    return NextResponse.json({ error: "Unauthorized. Please log in again." }, { status: 401 });
   }
   try {
     const { id } = await context.params;

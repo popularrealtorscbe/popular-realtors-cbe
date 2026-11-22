@@ -37,11 +37,11 @@ export default function AdminLoginPage() {
 
   return (
     <div className="mx-auto max-w-md">
-      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-copper">
+      <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue">
         Secure access
       </p>
       <h1 className="display mt-2 text-4xl text-ink">Agent login</h1>
-      <p className="mt-3 text-ink/65">
+      <p className="mt-3 text-muted">
         Enter the dashboard password to manage property listings.
       </p>
 
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
         <button type="submit" className="btn-primary w-full" disabled={loading}>
           {loading ? "Checking…" : "Enter dashboard"}
         </button>
-        <p className="text-xs text-ink/50">
+        <p className="text-xs text-muted">
           Demo password: <code>popular@demo</code>
           <br />
           (Unless you set a different <code>ADMIN_PASSWORD</code> in Vercel)

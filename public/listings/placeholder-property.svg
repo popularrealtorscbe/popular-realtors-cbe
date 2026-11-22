@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640" role="img" aria-label="Property photo placeholder">
+  <defs>
+    <pattern id="homes" width="80" height="80" patternUnits="userSpaceOnUse">
+      <text x="20" y="48" font-size="22" opacity="0.14">🏠</text>
+      <text x="58" y="78" font-size="16" opacity="0.1">🏡</text>
+    </pattern>
+  </defs>
+  <rect width="800" height="640" fill="#f4f1ea"/>
+  <rect width="800" height="640" fill="url(#homes)"/>
+  <rect x="0" y="0" width="800" height="640" fill="#ffffff" opacity="0.35"/>
+  <g transform="translate(400 300)">
+    <circle r="54" fill="#ffffff" opacity="0.9"/>
+    <text text-anchor="middle" y="14" font-size="48">🏠</text>
+  </g>
+  <text x="400" y="390" text-anchor="middle" fill="#6b7280" font-family="system-ui,sans-serif" font-size="15" font-weight="600">Photo coming soon</text>
+</svg>

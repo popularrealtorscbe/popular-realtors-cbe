@@ -67,12 +67,9 @@ export function ImageUploader({
   }
 
   return (
-    <div className="md:col-span-2 space-y-6 border border-[var(--line)] bg-sand/40 p-4">
+    <div className="md:col-span-2 space-y-6 border border-[var(--line)] bg-page p-4">
       <div>
-        <div className="label">Main thumbnail</div>
-        <p className="mb-3 text-sm text-ink/60">
-          This is the cover photo shown on cards and as the main property image.
-        </p>
+        <div className="label">Main photo (optional)</div>
         <div className="flex flex-col gap-3 sm:flex-row sm:items-start">
           <div className="relative h-40 w-full overflow-hidden bg-white sm:w-56">
             {thumbnail ? (
@@ -125,10 +122,7 @@ export function ImageUploader({
       </div>
 
       <div>
-        <div className="label">Gallery images</div>
-        <p className="mb-3 text-sm text-ink/60">
-          Upload many photos at once (max 20 per batch, 8 MB each). JPG/PNG/WEBP.
-        </p>
+        <div className="label">More photos</div>
         <input
           ref={galleryInput}
           type="file"
@@ -139,7 +133,7 @@ export function ImageUploader({
         />
         <button
           type="button"
-          className="inline-flex items-center gap-2 border border-forest/30 bg-white px-4 py-2 font-semibold text-forest"
+          className="inline-flex items-center gap-2 border border-blue/30 bg-white px-4 py-2 font-semibold text-navy"
           disabled={uploadingGallery}
           onClick={() => galleryInput.current?.click()}
         >
@@ -169,7 +163,7 @@ export function ImageUploader({
                 <button
                   type="button"
                   aria-label="Remove image"
-                  className="absolute right-2 top-2 bg-ink/80 p-1.5 text-white opacity-0 transition group-hover:opacity-100"
+                  className="absolute right-2 top-2 bg-ink/80 p-1.5 text-white opacity-100 sm:opacity-0 sm:transition sm:group-hover:opacity-100"
                   onClick={() =>
                     onImagesChange(images.filter((item) => item !== src))
                   }

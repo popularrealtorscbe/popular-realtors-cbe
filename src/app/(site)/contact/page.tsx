@@ -1,4 +1,7 @@
+import Image from "next/image";
+import { Reveal } from "@/components/site/Reveal";
 import { SITE } from "@/lib/site";
+import { SITE_IMAGES } from "@/lib/site-images";
 
 export const metadata = {
   title: "Contact",
@@ -6,91 +9,82 @@ export const metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="pt-28 pb-20">
-      <div className="site-shell grid gap-10 lg:grid-cols-[1fr_1fr]">
-        <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper">
-            Get in touch
+    <div className="bg-page pb-16 pt-10 md:pb-20 md:pt-14">
+      <div className="site-shell grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        <Reveal>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-muted">
+            Contact
           </p>
-          <h1 className="display mt-3 text-4xl text-ink md:text-5xl">
-            Talk to Popular Realtors
+          <h1 className="display mt-3 text-4xl text-navy md:text-5xl">
+            Talk to us
           </h1>
-          <p className="mt-4 text-ink/70">
-            Share what you are looking to buy or sell. We respond on call and
-            WhatsApp.
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted">
+            Not sure which site fits? Call or WhatsApp. Tell us what you need.
+            We listen and guide.
           </p>
-          <div className="mt-8 space-y-4 text-ink/80">
-            <p>
-              <strong>Address:</strong> {SITE.address}
-            </p>
-            <p>
-              <strong>Phone:</strong> {SITE.phone}
-            </p>
-            <p>
-              <strong>Email:</strong> {SITE.email}
-            </p>
-          </div>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href={`tel:${SITE.phone}`} className="btn-primary">
-              Call now
-            </a>
-            <a
-              href={`https://wa.me/${SITE.whatsapp}`}
-              target="_blank"
-              rel="noreferrer"
-              className="border border-[var(--line)] bg-white px-5 py-3 font-semibold text-forest"
-            >
-              WhatsApp
-            </a>
-          </div>
-        </div>
 
-        <form className="space-y-4 bg-white p-6 shadow-sm">
-          <div>
-            <label className="label" htmlFor="name">
-              Name
-            </label>
-            <input id="name" className="input" placeholder="Your name" />
+          <div className="mt-8 space-y-4 text-sm">
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                Office
+              </div>
+              <p className="mt-1 text-ink">{SITE.address}</p>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                Phone
+              </div>
+              <p className="mt-1 text-ink">{SITE.phone}</p>
+            </div>
+            <div>
+              <div className="text-[11px] font-semibold uppercase tracking-[0.14em] text-muted">
+                Email
+              </div>
+              <p className="mt-1 text-ink">{SITE.email}</p>
+            </div>
           </div>
-          <div>
-            <label className="label" htmlFor="phone">
-              Phone
-            </label>
-            <input id="phone" className="input" placeholder="WhatsApp number" />
-          </div>
-          <div>
-            <label className="label" htmlFor="interest">
-              Interest
-            </label>
-            <select id="interest" className="input" defaultValue="buy">
-              <option value="buy">Buying</option>
-              <option value="sell">Selling</option>
-              <option value="both">Both</option>
-            </select>
-          </div>
-          <div>
-            <label className="label" htmlFor="message">
-              Message
-            </label>
-            <textarea
-              id="message"
-              className="input min-h-32"
-              placeholder="Plot size, budget, preferred locality…"
+
+          <div className="relative mt-8 aspect-[16/10] overflow-hidden lg:hidden">
+            <Image
+              src={SITE_IMAGES.contact}
+              alt="Open land site near Perur"
+              fill
+              className="object-cover"
+              sizes="100vw"
+              unoptimized
             />
           </div>
-          <a
-            href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(
-              "Hi Popular Realtors CBE, I would like to enquire about a property.",
-            )}`}
-            className="btn-primary w-full"
-          >
-            Continue on WhatsApp
-          </a>
-          <p className="text-xs text-ink/50">
-            Demo form — opens WhatsApp with your enquiry. We can wire email
-            delivery once the client details are finalized.
-          </p>
-        </form>
+        </Reveal>
+
+        <Reveal delay={1}>
+          <div className="border border-line bg-white p-6 sm:p-8">
+            <h2 className="text-xl font-semibold text-navy">Quick message</h2>
+            <p className="mt-2 text-sm text-muted">
+              Share locality, budget and size. We reply from the office.
+            </p>
+            <p className="mt-6 text-sm text-muted">
+              Use Call or WhatsApp at the bottom right of any page.
+            </p>
+            <a
+              href={SITE.justdialUrl}
+              className="mt-4 block text-sm font-medium text-blue"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Also on JustDial
+            </a>
+            <div className="relative mt-8 hidden aspect-[16/10] overflow-hidden lg:block">
+              <Image
+                src={SITE_IMAGES.contactAlt}
+                alt="Plot land in Coimbatore"
+                fill
+                className="object-cover"
+                sizes="400px"
+                unoptimized
+              />
+            </div>
+          </div>
+        </Reveal>
       </div>
     </div>
   );

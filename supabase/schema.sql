@@ -33,9 +33,17 @@ create table if not exists public.properties (
   price numeric not null check (price >= 0),
   area_sqft numeric,
   area_acres numeric,
+  area_cents numeric,
+  price_per_cent numeric,
+  dimensions text not null default '',
+  site_no text not null default '',
+  facing text not null default '',
+  negotiable boolean not null default false,
   location text not null,
   city text not null default 'Coimbatore',
   locality text not null,
+  address text not null default '',
+  maps_url text not null default '',
   features text[] not null default '{}',
   thumbnail text not null default '',
   images text[] not null default '{}',
@@ -45,9 +53,25 @@ create table if not exists public.properties (
   updated_at timestamptz not null default now()
 );
 
--- Safe if table already existed without thumbnail
+-- Safe if table already existed without newer columns
 alter table public.properties
   add column if not exists thumbnail text not null default '';
+alter table public.properties
+  add column if not exists address text not null default '';
+alter table public.properties
+  add column if not exists maps_url text not null default '';
+alter table public.properties
+  add column if not exists area_cents numeric;
+alter table public.properties
+  add column if not exists price_per_cent numeric;
+alter table public.properties
+  add column if not exists dimensions text not null default '';
+alter table public.properties
+  add column if not exists site_no text not null default '';
+alter table public.properties
+  add column if not exists facing text not null default '';
+alter table public.properties
+  add column if not exists negotiable boolean not null default false;
 
 create index if not exists properties_status_idx on public.properties (status);
 create index if not exists properties_type_idx on public.properties (property_type);
@@ -88,3 +112,10 @@ create policy "Service role uploads property images"
   for insert
   to authenticated
   with check (bucket_id = 'property-images');
+
+-- API roles need table grants (service_role bypasses RLS but still needs GRANT)
+grant usage on schema public to anon, authenticated, service_role;
+
+grant select, insert, update, delete
+  on table public.properties
+  to anon, authenticated, service_role;

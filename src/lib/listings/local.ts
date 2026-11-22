@@ -84,9 +84,17 @@ export async function localCreateProperty(
     price: Number(input.price),
     area_sqft: input.area_sqft ?? null,
     area_acres: input.area_acres ?? null,
+    area_cents: input.area_cents ?? null,
+    price_per_cent: input.price_per_cent ?? null,
+    dimensions: input.dimensions?.trim() || "",
+    site_no: input.site_no?.trim() || "",
+    facing: input.facing?.trim() || "",
+    negotiable: Boolean(input.negotiable),
     location: input.location,
     city: input.city || "Coimbatore",
     locality: input.locality,
+    address: input.address?.trim() || "",
+    maps_url: input.maps_url?.trim() || "",
     features: input.features ?? [],
     thumbnail,
     images,
@@ -129,7 +137,31 @@ export async function localUpdateProperty(
       input.area_sqft !== undefined ? input.area_sqft : current.area_sqft,
     area_acres:
       input.area_acres !== undefined ? input.area_acres : current.area_acres,
+    area_cents:
+      input.area_cents !== undefined ? input.area_cents : current.area_cents,
+    price_per_cent:
+      input.price_per_cent !== undefined
+        ? input.price_per_cent
+        : current.price_per_cent,
+    dimensions:
+      input.dimensions !== undefined
+        ? input.dimensions.trim()
+        : current.dimensions || "",
+    site_no:
+      input.site_no !== undefined ? input.site_no.trim() : current.site_no || "",
+    facing:
+      input.facing !== undefined ? input.facing.trim() : current.facing || "",
+    negotiable:
+      input.negotiable !== undefined
+        ? Boolean(input.negotiable)
+        : Boolean(current.negotiable),
     features: input.features ?? current.features,
+    address:
+      input.address !== undefined ? input.address.trim() : current.address || "",
+    maps_url:
+      input.maps_url !== undefined
+        ? input.maps_url.trim()
+        : current.maps_url || "",
     thumbnail,
     images,
     featured:

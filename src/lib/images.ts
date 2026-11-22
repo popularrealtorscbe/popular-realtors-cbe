@@ -1,17 +1,42 @@
 import { FALLBACK_IMAGE, type Property } from "./types";
 
-/** Normalize older records that only had `images`. */
-export function normalizeProperty<T extends Partial<Property> & { images?: string[] }>(
-  property: T,
-): T & { thumbnail: string; images: string[] } {
+/** Normalize older records that may miss newer fields. */
+export function normalizeProperty<
+  T extends Partial<Property> & { images?: string[] },
+>(property: T): Property {
   const images = property.images?.filter(Boolean) ?? [];
   const thumbnail =
     property.thumbnail?.trim() || images[0] || FALLBACK_IMAGE;
   const gallery = images.filter((src) => src !== thumbnail);
+
   return {
-    ...property,
+    id: property.id || "",
+    title: property.title || "",
+    slug: property.slug || "",
+    description: property.description || "",
+    property_type: property.property_type || "residential_plot",
+    status: property.status || "available",
+    price: Number(property.price || 0),
+    area_sqft: property.area_sqft ?? null,
+    area_acres: property.area_acres ?? null,
+    area_cents: property.area_cents ?? null,
+    price_per_cent: property.price_per_cent ?? null,
+    dimensions: property.dimensions || "",
+    site_no: property.site_no || "",
+    facing: property.facing || "",
+    negotiable: Boolean(property.negotiable),
+    location: property.location || "",
+    city: property.city || "Coimbatore",
+    locality: property.locality || "",
+    address: property.address || "",
+    maps_url: property.maps_url || "",
+    features: property.features || [],
     thumbnail,
     images: gallery,
+    featured: Boolean(property.featured),
+    created_at: property.created_at || new Date().toISOString(),
+    updated_at: property.updated_at || new Date().toISOString(),
+    expires_at: property.expires_at ?? null,
   };
 }
 

@@ -37,6 +37,9 @@ export async function supabaseListProperties(options?: {
   return ((data ?? []) as Property[]).map((item) => normalizeProperty(item));
 }
 
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+
 export async function supabaseGetProperty(
   id: string,
 ): Promise<Property | null> {
@@ -47,17 +50,32 @@ export async function supabaseGetProperty(
     client = await createClient();
   }
 
-  const { data, error } = await client
+  // Query by id OR slug separately. Combining them in .or() breaks when the
+  // path segment is a slug (Postgres rejects non-UUID values on a uuid column).
+  if (UUID_RE.test(id)) {
+    const byId = await client
+      .from("properties")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (byId.error) {
+      console.error("[supabase] get property by id:", byId.error.message);
+    } else if (byId.data) {
+      return normalizeProperty(byId.data as Property);
+    }
+  }
+
+  const bySlug = await client
     .from("properties")
     .select("*")
-    .or(`id.eq.${id},slug.eq.${id}`)
+    .eq("slug", id)
     .maybeSingle();
-  if (error) {
-    console.error("[supabase] get property:", error.message);
+  if (bySlug.error) {
+    console.error("[supabase] get property by slug:", bySlug.error.message);
     return null;
   }
-  if (!data) return null;
-  return normalizeProperty(data as Property);
+  if (!bySlug.data) return null;
+  return normalizeProperty(bySlug.data as Property);
 }
 
 export async function supabaseCreateProperty(
@@ -87,9 +105,23 @@ export async function supabaseCreateProperty(
       input.area_acres === null || input.area_acres === undefined
         ? null
         : Number(input.area_acres),
+    area_cents:
+      input.area_cents === null || input.area_cents === undefined
+        ? null
+        : Number(input.area_cents),
+    price_per_cent:
+      input.price_per_cent === null || input.price_per_cent === undefined
+        ? null
+        : Number(input.price_per_cent),
+    dimensions: input.dimensions?.trim() || "",
+    site_no: input.site_no?.trim() || "",
+    facing: input.facing?.trim() || "",
+    negotiable: Boolean(input.negotiable),
     location: input.location,
     city: input.city || "Coimbatore",
     locality: input.locality || "Coimbatore",
+    address: input.address?.trim() || "",
+    maps_url: input.maps_url?.trim() || "",
     features: input.features ?? [],
     thumbnail,
     images,
@@ -132,9 +164,20 @@ export async function supabaseUpdateProperty(
   if (input.price !== undefined) payload.price = Number(input.price);
   if (input.area_sqft !== undefined) payload.area_sqft = input.area_sqft;
   if (input.area_acres !== undefined) payload.area_acres = input.area_acres;
+  if (input.area_cents !== undefined) payload.area_cents = input.area_cents;
+  if (input.price_per_cent !== undefined)
+    payload.price_per_cent = input.price_per_cent;
+  if (input.dimensions !== undefined)
+    payload.dimensions = input.dimensions.trim();
+  if (input.site_no !== undefined) payload.site_no = input.site_no.trim();
+  if (input.facing !== undefined) payload.facing = input.facing.trim();
+  if (input.negotiable !== undefined)
+    payload.negotiable = Boolean(input.negotiable);
   if (input.location !== undefined) payload.location = input.location;
   if (input.city !== undefined) payload.city = input.city;
   if (input.locality !== undefined) payload.locality = input.locality;
+  if (input.address !== undefined) payload.address = input.address.trim();
+  if (input.maps_url !== undefined) payload.maps_url = input.maps_url.trim();
   if (input.features !== undefined) payload.features = input.features;
   if (input.featured !== undefined) payload.featured = Boolean(input.featured);
   if (input.expires_at !== undefined) payload.expires_at = input.expires_at;
