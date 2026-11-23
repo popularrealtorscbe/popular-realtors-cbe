@@ -14,7 +14,8 @@ export function JsonLd() {
     url: SITE.siteUrl,
     description: SITE.description,
     telephone: SITE.phone,
-    image: `${SITE.siteUrl}/brand/logo-popular-realtors.png`,
+    image: `${SITE.siteUrl}/brand/logo-icon.png`,
+    logo: `${SITE.siteUrl}/brand/logo-icon.png`,
     address: {
       "@type": "PostalAddress",
       streetAddress: "No 4/118, School Road, Thethipalayam, Perur",

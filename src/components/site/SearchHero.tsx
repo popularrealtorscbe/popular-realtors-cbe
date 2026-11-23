@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { BrandLogo } from "@/components/site/BrandLogo";
 import { SITE } from "@/lib/site";
 import { SITE_IMAGES } from "@/lib/site-images";
 
@@ -17,18 +18,20 @@ export function SearchHero() {
           sizes="100vw"
           unoptimized
         />
+        {/* Dark overlays sit under the logo/copy so the white mark stays crisp */}
         <div className="absolute inset-0 bg-gradient-to-t from-navy-deep via-navy-deep/60 to-navy-deep/30" />
         <div className="absolute inset-0 bg-gradient-to-r from-navy-deep/75 via-navy-deep/25 to-transparent" />
 
-        <div className="absolute inset-0 flex items-end">
+        <div className="absolute inset-0 z-10 flex items-end">
           <div className="site-shell hero-copy w-full pb-10 pt-28 sm:pb-14">
             <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
               Est. {SITE.established} · {SITE.location}
             </p>
-            <h1 className="display mt-3 max-w-3xl text-4xl text-white sm:text-5xl md:text-6xl">
-              {SITE.name}
-            </h1>
-            <p className="mt-4 max-w-md text-base text-white/85 sm:text-lg">
+            <div className="mt-5">
+              <BrandLogo variant="hero" href="" className="pointer-events-none" />
+              <h1 className="sr-only">{SITE.name}</h1>
+            </div>
+            <p className="mt-5 max-w-md text-base text-white/85 sm:text-lg">
               {SITE.tagline}. Agri land, plots and sites from our Perur office.
               Confused? Call us. We listen and help you choose.
             </p>

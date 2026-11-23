@@ -42,11 +42,24 @@ export const metadata: Metadata = {
     url: SITE.siteUrl,
     locale: "en_IN",
     type: "website",
+    images: [
+      {
+        url: "/brand/logo-icon.png",
+        width: 256,
+        height: 256,
+        alt: "Popular Realtors CBE",
+      },
+    ],
   },
   twitter: {
     card: "summary",
     title: SITE.metaTitle,
     description: SITE.description,
+    images: ["/brand/logo-icon.png"],
+  },
+  icons: {
+    icon: [{ url: "/icon.png", type: "image/png", sizes: "256x256" }],
+    apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   robots: {
     index: true,
