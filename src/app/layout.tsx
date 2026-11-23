@@ -58,7 +58,13 @@ export const metadata: Metadata = {
     images: ["/brand/logo-icon.png"],
   },
   icons: {
-    icon: [{ url: "/icon.png", type: "image/png", sizes: "256x256" }],
+    // B&W diamond for Google SERP / browser tab (site lockups use separate brand PNGs)
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/logo-meta-bw-48.png", type: "image/png", sizes: "48x48" },
+      { url: "/brand/logo-meta-bw-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/icon.png", type: "image/png", sizes: "256x256" },
+    ],
     apple: [{ url: "/apple-icon.png", type: "image/png", sizes: "180x180" }],
   },
   robots: {
